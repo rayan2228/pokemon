@@ -65,7 +65,9 @@ html {
   text-align: center;
   border-color: #FFCC01;
 }
-
+.main .select .nomove{
+  color: red;
+}
 .main .card {
   display: flex;
   flex-direction: column;

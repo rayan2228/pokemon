@@ -12,6 +12,7 @@ const Pokemon = () => {
     const [moveName, setMoveName] = useState()
     const [movesNum, setMovesNum] = useState([])
     const [movesNumVal, setMovesNumVal] = useState(0)
+    const [checkMovesNumVal, setCheckMovesNumVal] = useState(true)
     useEffect(() => {
         const getData = async () => {
             let fetchData = `https://pokeapi.co/api/v2/pokemon/${num}`
@@ -21,14 +22,22 @@ const Pokemon = () => {
             setName(name)
             setHeight(height)
             setWeight(weight)
-            setMoves(moves.length)
-            setMoveName(moves[movesNumVal].move.name)
-            setMovesNum(moves)
+            if (moves.length === 0) {
+                setMoves(moves.length)
+                setMoveName(`" "`)
+                setMovesNum([])
+                setCheckMovesNumVal(false)
+            } else {
+                setMoves(moves.length)
+                setMoveName(moves[movesNumVal].move.name)
+                setMovesNum(moves)
+                setCheckMovesNumVal(true)
+            }
         }
         getData()
     })
     let opt = []
-    for (let i = 1; i <= 500; i++) {
+    for (let i = 1; i <= 889; i++) {
         opt.push(i)
     }
     return (
@@ -39,21 +48,21 @@ const Pokemon = () => {
                     <label>select your <span className="pokemon">pokemon</span> </label>
                     <select value={num} onChange={(e) => {
                         setNum(e.target.value)
+                        setMovesNumVal(0)
                     }}>
                         {
                             opt.map((val, index) => <option value={val} key={index + 1}> {val}</option>)
                         }
                     </select>
-
                     <label>select your <span className="move">move</span></label>
-                    <select value={movesNumVal} onChange={(e) => {
+                    {checkMovesNumVal === false ? <p className="nomove">you have no moves</p> : <select value={movesNumVal} onChange={(e) => {
                         setMovesNumVal(e.target.value)
                     }}>
+
                         {
                             movesNum.map((val, index) => <option value={index} key={index + 1}> {index + 1}</option>)
                         }
-
-                    </select>
+                    </select>}
                 </div>
                 <Card
                     name={name}
